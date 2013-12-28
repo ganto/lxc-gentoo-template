@@ -103,7 +103,7 @@ cache_setup(){
  
         #clean from failed previous run
         rm -rf "${partialfs}"
-        mkdir "${partialfs}"
+        mkdir -p "${partialfs}"
 
         #let's go
         cache_precheck && \
@@ -230,7 +230,7 @@ cache_dev()
         mkdir "${partialfs}/dev/pts"
 
         if [ -n ${nettun} ]; then
-                mkdir -m 755 "${partialfs}net"
+                mkdir -m 755 "${partialfs}/net"
                 mknod -m 666 "${partialfs}/net/tun"        c 10 200
         fi
         return 0
@@ -412,7 +412,7 @@ container_private_portage()
 {
         #called from container_portage() do not call directly from container_setup
         printf "# untaring private portage to %s from %s ... \n" "${rootfs}/${portage_container}" "${portage_cache}"
-        chroot "${rootfs}" mkdir -p "${portage_container}"
+        mkdir -p "${rootfs}/${portage_container}"
         execute_exclusively portage tar -xp --strip-components 1 -C "${rootfs}/${portage_container}" -f "${portage_cache}" \
                 || die 2 "Error: unable to extract the portage tree.\n"
         printf "=> done\n"
